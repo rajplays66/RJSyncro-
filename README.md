@@ -1,2 +1,2 @@
 # RJBlog
-My first project 
+Welcome to RJBlog 
