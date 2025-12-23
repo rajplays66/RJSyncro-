@@ -872,17 +872,16 @@ custom
 .hero-buttons {
     animation: fadeInUp 1s ease-out 0.8s both;
 }
-/* Custom Logo Styling - OPTION A */
+/* Custom Logo Styling - OPTION A Size */
 .custom-logo {
-    width: 55px;        /* Your chosen size */
+    width: 55px;
     height: 55px;
-    object-fit: contain;
+    object-fit: contain; /* Crucial for transparent PNGs */
     margin-right: 12px;
     border-radius: 10px;
     transition: all 0.3s ease;
 }
 
-/* Optional hover effect */
 .logo:hover .custom-logo {
     transform: scale(1.08);
 }
