@@ -860,7 +860,7 @@ button:focus {
         transform: translateY(0);
     }
 }
-
+custom
 .hero-content {
     animation: fadeInUp 1s ease-out;
 }
@@ -872,10 +872,17 @@ button:focus {
 .hero-buttons {
     animation: fadeInUp 1s ease-out 0.8s both;
 }
+/* Custom Logo Styling */
 .custom-logo {
-    width: 40px;
+    width: 40px; /* Adjust size here if needed */
     height: 40px;
     object-fit: contain;
     margin-right: 10px;
-    border-radius: 8px;
+    border-radius: 8px; /* Optional rounded corners */
+    transition: all 0.3s ease;
+}
+
+/* Optional Hover Effect */
+.logo:hover .custom-logo {
+    transform: scale(1.05);
 }
