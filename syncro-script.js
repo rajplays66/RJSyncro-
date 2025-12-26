@@ -37,8 +37,7 @@ function addMessage(text, sender) {
     senderDiv.className = 'message-sender';
     senderDiv.innerHTML = sender === 'user' 
         ? '<i class="fas fa-user"></i> You' 
-        : '<i class="fas fa-robot"></i> Syncro';
-    
+        : '<img src="https://i.ibb.co/d01dTX9G/Gemini-Generated-Image-1nbd0r1nbd0r1nbd-removebg-preview.png" class="message-avatar"> Syncro';
     const contentDiv = document.createElement('div');
     contentDiv.className = 'message-content';
     
