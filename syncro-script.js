@@ -78,6 +78,9 @@ async function sendToAI(userMessage) {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
+  message: userMessage,  // You need to pass the actual message
+  system_instruction: SYSTEM_INSTRUCTION
+})
                 contents: [{
                     parts: [{
                         // Combine system instruction with the user's question
