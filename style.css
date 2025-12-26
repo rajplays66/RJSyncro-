@@ -909,3 +909,30 @@ custom
   margin-right: 10px;
   border: 2px solid #00ffff;
 }
+/* Footer AI Link Styling */
+.footer-ai-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid #00ffff;
+    object-fit: cover;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.ai-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #00ffff;
+    font-weight: 600;
+}
+
+.ai-link:hover {
+    color: #ffffff;
+}
+
+.ai-link:hover .footer-ai-icon {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.7);
+}
