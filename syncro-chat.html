@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Syncro AI | RJSyncro</title>
+    <link rel="stylesheet" href="syncro-style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/LX9S1d4Z/Gemini-Generated-Image-oyxvr1oyxvr1oyxv-Picsart-Background-Remover.png">
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Chat Header -->
+        <div class="chat-header">
+            <div class="bot-avatar">
+                <i class="fas fa-robot"></i>
+            </div>
+            <div class="bot-info">
+                <h2>Syncro AI</h2>
+                <p class="bot-tagline">Your assistant for RJSyncro</p>
+            </div>
+            <a href="index.html" class="home-button" title="Back to Home">
+                <i class="fas fa-home"></i>
+            </a>
+        </div>
+
+        <!-- Chat Messages Area -->
+        <div class="chat-messages" id="chatMessages">
+            <!-- Initial Bot Message -->
+            <div class="message bot-message">
+                <div class="message-avatar">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <div class="message-content">
+                    <p>Hello! I'm <strong>Syncro</strong>, the AI assistant for <strong>RJSyncro</strong>. 👋</p>
+                    <p>You can ask me general questions, or ask about this tech blog, its topics, and the creator. How can I help you today?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Typing Indicator (Hidden by default) -->
+        <div class="typing-indicator" id="typingIndicator">
+            <span></span><span></span><span></span>
+        </div>
+
+        <!-- Chat Input Area -->
+        <div class="input-area">
+            <input type="text" 
+                   id="userInput" 
+                   placeholder="Ask Syncro anything..." 
+                   autocomplete="off">
+            <button id="sendButton">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+
+        <!-- Footer Info -->
+        <div class="chat-footer">
+            <p>Powered by Google's Gemini AI. Conversations are processed securely.</p>
+        </div>
+    </div>
+
+    <!-- Link to the JavaScript file -->
+    <script src="syncro-script.js"></script>
+</body>
+</html>
