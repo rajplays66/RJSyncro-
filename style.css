@@ -886,11 +886,26 @@ custom
     transform: scale(1.08);
 }
 .navbar .logo img {
-  width: 60px;
-  height: 60px;
+  width: 60px;      /* NEW SIZE */
+  height: 60px;     /* NEW SIZE */
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #00ffff;
+  margin-right: 15px;
+  transition: all 0.3s ease;
+}
+
+.navbar .logo img:hover {
+  transform: rotate(10deg);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
 }
 
 .nav-icon {
-  width: 25px;
-  height: 25px;
+  width: 25px;      /* NEW SIZE */
+  height: 25px;     /* NEW SIZE */
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 10px;
+  border: 2px solid #00ffff;
 }
