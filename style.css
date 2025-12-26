@@ -901,8 +901,8 @@ custom
 }
 
 .nav-icon {
-  width: 50px;      /* NEW SIZE */
-  height: 50px;     /* NEW SIZE */
+  width: 40px;      /* NEW SIZE */
+  height: 40px;     /* NEW SIZE */
   border-radius: 50%;
   object-fit: cover;
   vertical-align: middle;
