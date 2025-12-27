@@ -27,7 +27,10 @@ async function sendToAI(message) {
         const response = await fetch(API_URL, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({message: message})
+            body: JSON.stringify({
+                message: message,
+                system_instruction: SYSTEM_INSTRUCTION
+            })
         });
         
         if (!response.ok) {
@@ -36,14 +39,17 @@ async function sendToAI(message) {
         
         const data = await response.json();
         
-        if (data.candidates && data.candidates[0]) {
+        if (data.candidates && data.candidates[0] && data.candidates[0].content) {
             return data.candidates[0].content.parts[0].text;
+        } else if (data.error) {
+            return `API Error: ${data.error}`;
+        } else {
+            return "I received an unexpected response.";
         }
-        return "Error: No response from AI";
         
     } catch (error) {
         console.error('AI Error:', error);
-        return `Error: ${error.message}`;
+        return `Connection Error: ${error.message}`;
     } finally {
         hideTyping();
     }
