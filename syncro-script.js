@@ -51,7 +51,13 @@ async function sendToAI(message) {
         }
         
         const data = await response.json();
-        
+        // Show product buttons if backend suggests products
+if (data.metadata?.suggestedProducts?.length > 0) {
+    // Small delay to show after message appears
+    setTimeout(() => {
+        showProductButtons(data.metadata.suggestedProducts);
+    }, 300);
+}
         if (data.candidates && data.candidates[0] && data.candidates[0].content) {
             return data.candidates[0].content.parts[0].text;
         } else if (data.error) {
