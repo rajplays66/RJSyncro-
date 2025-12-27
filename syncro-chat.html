@@ -65,6 +65,44 @@
     </div>
 
     <!-- Link to the JavaScript file -->
+  <!-- ===== PRODUCT SIDEBAR ===== -->
+<div class="product-sidebar" id="productSidebar">
+    <h3><i class="fas fa-store"></i> Our Products</h3>
+    <div class="product-list">
+        <div class="product-item" onclick="askAboutProduct('web templates')">
+            <strong><i class="fas fa-globe"></i> Web Templates</strong>
+            <p class="price">From $49</p>
+            <small>Professional website templates</small>
+        </div>
+        <div class="product-item" onclick="askAboutProduct('SaaS starter kit')">
+            <strong><i class="fas fa-rocket"></i> SaaS Kit</strong>
+            <p class="price">$299</p>
+            <small>Complete SaaS boilerplate</small>
+        </div>
+        <div class="product-item" onclick="askAboutProduct('AI chat system')">
+            <strong><i class="fas fa-robot"></i> AI Chat</strong>
+            <p class="price">From $199</p>
+            <small>Custom AI assistant</small>
+        </div>
+        <div class="product-item" onclick="askAboutProduct('custom development')">
+            <strong><i class="fas fa-code"></i> Custom Dev</strong>
+            <p class="price">Custom quote</p>
+            <small>Tailored solutions</small>
+        </div>
+    </div>
+    <button class="contact-btn" onclick="askAboutProduct('contact sales')">
+        <i class="fas fa-phone"></i> Contact Sales
+    </button>
+</div>
+
+<script>
+// Product inquiry function
+function askAboutProduct(productName) {
+    document.getElementById('userInput').value = `Tell me about ${productName}`;
+    document.getElementById('sendButton').click();
+}
+</script>
+<!-- ===== END PRODUCT SIDEBAR ===== -->
     <script src="syncro-script.js"></script>
 </body>
 </html>
