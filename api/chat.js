@@ -1,14 +1,9 @@
-// File: api/chat.js (Business Version)
+// File: api/chat.js (Business Version with ALL Enhancements)
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
-    // ===== FILE UPLOAD HANDLING =====
-    if (req.body.fileData) {
-        const fileText = await processFile(req.body.fileData);
-        req.body.message = `${req.body.message}\n\nFile content: ${fileText}`;
-    }
-    // ===== END FILE UPLOAD =====
+    
     try {
         const { message, system_instruction } = req.body;
         
@@ -30,9 +25,9 @@ export default async function handler(req, res) {
                 price: "$49-$199",
                 features: ["Fully responsive", "SEO optimized", "Easy customization", "Free updates"],
                 bestFor: "Startups, small businesses, freelancers",
-                link: "/products/templates"
+                link: "/products/templates",
                 paymentLink: "https://buy.stripe.com/test_00g4jK9yN7kR8KA6op",
-        buyNowText: "Buy Template (From $49)"
+                buyNowText: "Buy Template (From $49)"
             },
             "saas-boilerplate": {
                 name: "SaaS Starter Kit",
@@ -40,9 +35,9 @@ export default async function handler(req, res) {
                 price: "$299 (one-time)",
                 features: ["User authentication", "Stripe payments", "Admin dashboard", "API ready", "Documentation"],
                 bestFor: "Developers launching SaaS products",
-                link: "/products/saas-kit"
+                link: "/products/saas-kit",
                 paymentLink: "https://buy.stripe.com/test_8wM5nidwv0zG1Re7st",
-        buyNowText: "Get SaaS Kit ($299)"
+                buyNowText: "Get SaaS Kit ($299)"
             },
             "ai-chat-system": {
                 name: "AI Chat System",
@@ -50,9 +45,9 @@ export default async function handler(req, res) {
                 price: "$199 (one-time) or $29/month",
                 features: ["Multiple AI providers", "Custom knowledge base", "Admin panel", "Analytics", "Easy setup"],
                 bestFor: "Businesses wanting AI customer support",
-                link: "/products/ai-chat"
+                link: "/products/ai-chat",
                 paymentLink: "https://buy.stripe.com/test_7sI6mKbwB9tL2TD5qr",
-        buyNowText: "Get AI Chat System ($199)"
+                buyNowText: "Get AI Chat System ($199)"
             },
             "custom-development": {
                 name: "Custom Development",
@@ -60,9 +55,9 @@ export default async function handler(req, res) {
                 price: "Custom quote (starts from $999)",
                 features: ["Full customization", "Dedicated support", "Source code ownership", "3 months maintenance"],
                 bestFor: "Businesses with specific, unique needs",
-                link: "/contact"
+                link: "/contact",
                 paymentLink: "https://calendly.com/synchrotech/consultation",
-        buyNowText: "Request Custom Quote"
+                buyNowText: "Request Custom Quote"
             }
         };
         
@@ -71,180 +66,161 @@ export default async function handler(req, res) {
             text = text.toLowerCase();
             const matches = [];
             
-    // ===== IMPROVED WEB TEMPLATES DETECTION =====
-    if (text.includes('template') || text.includes('website') || text.includes('web design') || 
-        text.includes('landing page') || text.includes('portfolio site') || 
-        text.includes('business website') || text.includes('ecommerce site') ||
-        text.includes('wordpress') || text.includes('html template')) {
-        matches.push('web-templates');
-    }
-    
-    // ===== IMPROVED SAAS DETECTION =====
-    if (text.includes('saas') || text.includes('software') || text.includes('app') || 
-        text.includes('application') || text.includes('dashboard') || 
-        text.includes('admin panel') || text.includes('user management') ||
-        text.includes('subscription') || text.includes('monthly plan')) {
-        matches.push('saas-boilerplate');
-    }
-    
-    // ===== IMPROVED AI CHAT DETECTION =====
-    if (text.includes('chat') || text.includes('ai') || text.includes('assistant') || 
-        text.includes('bot') || text.includes('chatbot') || text.includes('chat gpt') ||
-        text.includes('customer support') || text.includes('automated reply') ||
-        text.includes('what you are using') || text.includes('like this')) {
-        matches.push('ai-chat-system');
-    }
-    
-    // ===== IMPROVED CUSTOM DEV DETECTION =====
-    if (text.includes('custom') || text.includes('build') || text.includes('develop') || 
-        text.includes('create') || text.includes('make me') || text.includes('hire') ||
-        text.includes('contract') || text.includes('freelance') || 
-        text.includes('from scratch') || text.includes('bespoke')) {
-        matches.push('custom-development');
-    }
-    
-    // ===== PRICING QUESTIONS =====
-    if (text.includes('price') || text.includes('cost') || text.includes('how much') || 
-        text.includes('pricing') || text.includes('$$') || text.includes('expensive') ||
-        text.includes('affordable') || text.includes('budget')) {
-        return Object.keys(PRODUCTS); // Show all products
-    }
-    
-    // ===== GENERAL PRODUCT QUESTIONS =====
-    if (text.includes('what do you sell') || text.includes('products') || 
-        text.includes('offer') || text.includes('services') || 
-        text.includes('what can you do') || text.includes('business offer')) {
-        return Object.keys(PRODUCTS);
-    }
-
-    return matches;
-};
-        // ===== BUSINESS FAQ DATABASE =====
-const BUSINESS_FAQ = {
-    "how to buy": "You can purchase directly on our website with credit card or PayPal. Most products offer instant digital delivery.",
-    "how to purchase": "Visit our website, select your product, add to cart, and checkout. You'll receive download links immediately.",
-    "support": "Email us at support@synchrotech.com or use our contact form. We reply within 24 hours.",
-    "contact": "Email: hello@synchrotech.com | Phone: +1 (555) 123-4567 (Mon-Fri 9AM-6PM)",
-    "refund": "We offer 30-day money-back guarantee on digital products if you're not satisfied.",
-    "license": "All products come with commercial license. You can use them for client projects.",
-    "updates": "Products include 1 year of free updates. You'll get notifications when new versions are released.",
-    "requirements": "Our products work on any modern browser. Some require basic HTML/CSS knowledge.",
-    "customization": "Yes! All products are fully customizable. We provide documentation and examples.",
-    "team": "We're a team of 5 developers and designers based in San Francisco, founded in 2023.",
-    "discount": "We offer 20% student discount and bulk discounts for 3+ products. Contact sales.",
-    "timeline": "Digital products: Instant delivery | Custom projects: 2-8 weeks depending on scope."
-    "demo": "You can request a live demo by contacting our sales team. We'll schedule a Zoom call.",
-    "integration": "Our products integrate with popular tools like Stripe, Mailchimp, Google Analytics.",
-    "demo": "You can book a free 30-minute demo at: https://calendly.com/synchrotech/demo",
-    "schedule": "Book a call: https://calendly.com/synchrotech/consultation",
-    "meeting": "Schedule meeting: https://calendly.com/synchrotech/meeting",
-
-// Add detection for demo requests
-if (text.includes('demo') || text.includes('schedule') || 
-    text.includes('meeting') || text.includes('call') ||
-    text.includes('consultation')) {
-    // Force demo link response
-    return res.status(200).json({
-        candidates: [{
-            content: {
-                parts: [{ 
-                    text: "I'd love to schedule a demo! 🗓️\n\nBook a 30-minute slot here:\nhttps://calendly.com/synchrotech/demo\n\nOr email sales@synchrotech.com to arrange." 
-                }]
+            // Web Templates
+            if (text.includes('template') || text.includes('website') || text.includes('web design') || 
+                text.includes('landing page') || text.includes('portfolio site') || 
+                text.includes('business website') || text.includes('ecommerce site') ||
+                text.includes('wordpress') || text.includes('html template')) {
+                matches.push('web-templates');
             }
-        }]
-    });
-}
-};
-
-// Helper to check FAQ
-const checkFAQ = (text) => {
-    text = text.toLowerCase();
-    for (const [keyword, answer] of Object.entries(BUSINESS_FAQ)) {
-        if (text.includes(keyword)) {
-            return answer;
-        }
-    }
-    return null;
-};
-// ===== END FAQ =====
+            
+            // SaaS Kit
+            if (text.includes('saas') || text.includes('software') || text.includes('app') || 
+                text.includes('application') || text.includes('dashboard') || 
+                text.includes('admin panel') || text.includes('user management') ||
+                text.includes('subscription') || text.includes('monthly plan')) {
+                matches.push('saas-boilerplate');
+            }
+            
+            // AI Chat System
+            if (text.includes('chat') || text.includes('ai') || text.includes('assistant') || 
+                text.includes('bot') || text.includes('chatbot') || text.includes('chat gpt') ||
+                text.includes('customer support') || text.includes('automated reply')) {
+                matches.push('ai-chat-system');
+            }
+            
+            // Custom Development
+            if (text.includes('custom') || text.includes('build') || text.includes('develop') || 
+                text.includes('create') || text.includes('make me') || text.includes('hire') ||
+                text.includes('contract') || text.includes('freelance')) {
+                matches.push('custom-development');
+            }
+            
+            // Pricing questions
+            if (text.includes('price') || text.includes('cost') || text.includes('how much') || 
+                text.includes('pricing') || text.includes('expensive') || text.includes('affordable')) {
+                return Object.keys(PRODUCTS);
+            }
+            
+            // General product questions
+            if (text.includes('what do you sell') || text.includes('products') || 
+                text.includes('offer') || text.includes('services')) {
+                return Object.keys(PRODUCTS);
+            }
+            
+            return matches;
+        };
+        
         const relevantProducts = detectProducts(message);
-     // ===== CHECK FAQ FIRST =====
-const faqAnswer = checkFAQ(message);
-if (faqAnswer) {
-    console.log('📊 ANALYTICS FAQ:', {
-        timestamp: new Date().toISOString(),
-        question: message.substring(0, 100),
-        productsMentioned: relevantProducts,
-        isFAQ: true
-    });
-    // ===== END ANALYTICS =====
-    // Return FAQ answer immediately (fast, no AI call needed)
-    return res.status(200).json({
-        candidates: [{
-            content: {
-                parts: [{ text: faqAnswer }]
+        
+        // ===== BUSINESS FAQ DATABASE =====
+        const BUSINESS_FAQ = {
+            "how to buy": "You can purchase directly on our website with credit card or PayPal. Most products offer instant digital delivery.",
+            "how to purchase": "Visit our website, select your product, add to cart, and checkout. You'll receive download links immediately.",
+            "support": "Email us at support@synchrotech.com or use our contact form. We reply within 24 hours.",
+            "contact": "Email: hello@synchrotech.com | Phone: +1 (555) 123-4567 (Mon-Fri 9AM-6PM)",
+            "refund": "We offer 30-day money-back guarantee on digital products if you're not satisfied.",
+            "license": "All products come with commercial license. You can use them for client projects.",
+            "updates": "Products include 1 year of free updates. You'll get notifications when new versions are released.",
+            "requirements": "Our products work on any modern browser. Some require basic HTML/CSS knowledge.",
+            "customization": "Yes! All products are fully customizable. We provide documentation and examples.",
+            "team": "We're a team of 5 developers and designers based in San Francisco, founded in 2023.",
+            "discount": "We offer 20% student discount and bulk discounts for 3+ products. Contact sales.",
+            "demo": "You can book a free 30-minute demo at: https://calendly.com/synchrotech/demo",
+            "schedule": "Book a call: https://calendly.com/synchrotech/consultation",
+            "meeting": "Schedule meeting: https://calendly.com/synchrotech/meeting",
+            "call": "Schedule a consultation call: https://calendly.com/synchrotech/consultation",
+            "consultation": "Book a free consultation: https://calendly.com/synchrotech/consultation",
+            "integration": "Our products integrate with popular tools like Stripe, Mailchimp, Google Analytics.",
+            "timeline": "Digital products: Instant delivery | Custom projects: 2-8 weeks depending on scope."
+        };
+        
+        // Helper to check FAQ
+        const checkFAQ = (text) => {
+            text = text.toLowerCase();
+            for (const [keyword, answer] of Object.entries(BUSINESS_FAQ)) {
+                if (text.includes(keyword)) {
+                    return answer;
+                }
             }
-        }],
-        metadata: {
-            isFAQ: true,
-            suggestedProducts: relevantProducts
+            return null;
+        };
+        
+        // Check FAQ first
+        const faqAnswer = checkFAQ(message);
+        if (faqAnswer) {
+            // ===== ANALYTICS TRACKING =====
+            console.log('📊 ANALYTICS FAQ:', {
+                timestamp: new Date().toISOString(),
+                question: message.substring(0, 100),
+                productsMentioned: relevantProducts,
+                isFAQ: true
+            });
+            // ===== END TRACKING =====
+            
+            return res.status(200).json({
+                candidates: [{
+                    content: {
+                        parts: [{ text: faqAnswer }]
+                    }
+                }],
+                metadata: {
+                    isFAQ: true,
+                    suggestedProducts: relevantProducts.map(key => PRODUCTS[key])
+                }
+            });
         }
-    });
-}
-// ===== END FAQ CHECK =====
-// ===== DEMO/MEETING DETECTION =====
-const text = message.toLowerCase();
-if (text.includes('demo') || text.includes('schedule') || 
-    text.includes('meeting') || text.includes('call') ||
-    text.includes('consultation') || text.includes('book a') ||
-    text.includes('setup call') || text.includes('talk to sales') ||
-    text.includes('speak with') || text.includes('discuss project')) {
-    
-    // Track analytics
-    console.log('📊 ANALYTICS DEMO:', {
-        timestamp: new Date().toISOString(),
-        question: message.substring(0, 100),
-        productsMentioned: relevantProducts,
-        isDemoRequest: true
-    });
-    
-    // Return demo scheduling response
-    return res.status(200).json({
-        candidates: [{
-            content: {
-                parts: [{ 
-                    text: `🎯 Perfect! I'd love to schedule a demo for you!\n\n📅 **Book a 30-minute slot here:**\nhttps://calendly.com/synchrotech/demo\n\n📞 **Or email our sales team:**\nsales@synchrotech.com\n\n💡 **Best times:** Weekdays 9AM-6PM (PST)\nWe'll discuss your needs and show you relevant products.` 
-                }]
+        
+        // ===== DEMO/MEETING DETECTION =====
+        const text = message.toLowerCase();
+        if (text.includes('demo') || text.includes('schedule') || 
+            text.includes('meeting') || text.includes('call') ||
+            text.includes('consultation') || text.includes('book a') ||
+            text.includes('setup call') || text.includes('talk to sales')) {
+            
+            // ===== ANALYTICS TRACKING =====
+            console.log('📊 ANALYTICS DEMO:', {
+                timestamp: new Date().toISOString(),
+                question: message.substring(0, 100),
+                productsMentioned: relevantProducts,
+                isDemoRequest: true
+            });
+            // ===== END TRACKING =====
+            
+            let demoMessage = "🎯 Perfect! I'd love to schedule a demo for you!\n\n";
+            
+            // Customize based on mentioned products
+            if (relevantProducts.includes('web-templates')) {
+                demoMessage += "**For Web Templates:** I'll show you our template library and customization options.\n";
             }
-        }],
-        metadata: {
-            isDemoRequest: true,
-            suggestedProducts: relevantProducts
+            if (relevantProducts.includes('saas-boilerplate')) {
+                demoMessage += "**For SaaS Kit:** I'll demo the admin panel, user auth, and payment integration.\n";
+            }
+            if (relevantProducts.includes('ai-chat-system')) {
+                demoMessage += "**For AI Chat System:** I'll show the admin dashboard and customization options.\n";
+            }
+            if (relevantProducts.includes('custom-development')) {
+                demoMessage += "**For Custom Development:** Our team will discuss your requirements and timeline.\n";
+            }
+            
+            demoMessage += "\n📅 **Book a 30-minute slot:** https://calendly.com/synchrotech/demo";
+            demoMessage += "\n📧 **Or email:** sales@synchrotech.com";
+            demoMessage += "\n\nWe respond within 2 business hours!";
+            
+            return res.status(200).json({
+                candidates: [{
+                    content: {
+                        parts: [{ text: demoMessage }]
+                    }
+                }],
+                metadata: {
+                    isDemoRequest: true,
+                    suggestedProducts: relevantProducts.map(key => PRODUCTS[key])
+                }
+            });
         }
-    });
-}
-// ===== END DEMO DETECTION =====
-
-// If not FAQ and not demo request, continue to AI API call...
-    // ===== REAL-TIME DATA =====
-const realTimeData = await getRealTimeData(message);
-if (realTimeData) {
-    enhancedPrompt += `\n\nREAL-TIME DATA:\n${realTimeData}`;
-}
-// ===== END REAL-TIME DATA =====
-        // ===== WEB SEARCH ENHANCEMENT =====
-const shouldSearchWeb = message.includes('current') || 
-                       message.includes('today') || 
-                       message.includes('news') ||
-                       message.includes('weather') ||
-                       message.includes('latest');
-
-let webResults = '';
-if (shouldSearchWeb) {
-    webResults = await searchWeb(message); // You need to create this function
-    enhancedPrompt += `\n\nREAL-TIME INFORMATION:\n${webResults}`;
-}
-// ===== END WEB SEARCH =====
+        // ===== END DEMO DETECTION =====
+        
         // Build enhanced prompt
         let enhancedPrompt = system_instruction || "You are Syncro, AI assistant for SyncroTech Solutions.";
         
@@ -257,15 +233,27 @@ if (shouldSearchWeb) {
                 enhancedPrompt += `\nPRICE: ${p.price}`;
                 enhancedPrompt += `\nFEATURES: ${p.features.join(', ')}`;
                 enhancedPrompt += `\nBEST FOR: ${p.bestFor}`;
+                enhancedPrompt += `\nPAYMENT LINK: ${p.paymentLink}`;
             });
             enhancedPrompt += `\n\nUse this product information in your response. If appropriate, suggest the most relevant product.`;
-            if (relevantProducts.length === 1) {
-        const product = PRODUCTS[relevantProducts[0]];
-        enhancedPrompt += `\n\nPAYMENT LINK: ${product.paymentLink}`;
-        enhancedPrompt += `\nInclude this purchase option in your response. Say: "You can purchase instantly: ${product.paymentLink}" or similar.`;
+            
+            // ===== PAYMENT LINK ENHANCEMENT =====
+            const wantsToBuy = text.includes('buy') || text.includes('purchase') || 
+                              text.includes('order') || text.includes('get it') ||
+                              text.includes('how to get') || text.includes('where to buy');
+            
+            const askingPrice = text.includes('price') || text.includes('cost') || 
+                               text.includes('how much') || text.includes('pricing');
+            
+            if ((wantsToBuy || askingPrice) && relevantProducts.length > 0) {
+                enhancedPrompt += `\n\nUSER WANTS TO BUY OR KNOW PRICING. Include payment links and encourage purchase:`;
+                relevantProducts.forEach(productKey => {
+                    const p = PRODUCTS[productKey];
+                    enhancedPrompt += `\n- ${p.name}: ${p.price}. Buy now: ${p.paymentLink}`;
+                });
             }
+            // ===== END PAYMENT LINK =====
         }
-        // ===== END BUSINESS LOGIC =====
         
         const messages = [
             {
@@ -302,14 +290,18 @@ if (shouldSearchWeb) {
         }
         
         const replyText = data.choices?.[0]?.message?.content || "I apologize, I couldn't generate a response. Please try again or contact our support.";
+        
+        // ===== ANALYTICS TRACKING =====
         console.log('📊 ANALYTICS AI:', {
-    timestamp: new Date().toISOString(),
-    question: message.substring(0, 100),
-    productsMentioned: relevantProducts,
-    isFAQ: false,
-    userAgent: req.headers['user-agent']?.substring(0, 50)
-});
-// ===== END ANALYTICS =====
+            timestamp: new Date().toISOString(),
+            question: message.substring(0, 100),
+            productsMentioned: relevantProducts,
+            isFAQ: false,
+            isDemoRequest: false,
+            userAgent: req.headers['user-agent']?.substring(0, 50)
+        });
+        // ===== END TRACKING =====
+        
         res.status(200).json({
             candidates: [{
                 content: {
