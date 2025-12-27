@@ -81,7 +81,19 @@ export default async function handler(req, res) {
         };
         
         const relevantProducts = detectProducts(message);
-        
+        // ===== WEB SEARCH ENHANCEMENT =====
+const shouldSearchWeb = message.includes('current') || 
+                       message.includes('today') || 
+                       message.includes('news') ||
+                       message.includes('weather') ||
+                       message.includes('latest');
+
+let webResults = '';
+if (shouldSearchWeb) {
+    webResults = await searchWeb(message); // You need to create this function
+    enhancedPrompt += `\n\nREAL-TIME INFORMATION:\n${webResults}`;
+}
+// ===== END WEB SEARCH =====
         // Build enhanced prompt
         let enhancedPrompt = system_instruction || "You are Syncro, AI assistant for SyncroTech Solutions.";
         
