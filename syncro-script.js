@@ -226,3 +226,92 @@ function showProductButtons(products) {
     }
 }
 // ===== END PRODUCT BUTTONS =====
+// ===== CLICKABLE LINKS FIX =====
+function makeLinksClickable() {
+    // Find all AI messages
+    const aiMessages = document.querySelectorAll('.ai-message, .bot-message');
+    
+    aiMessages.forEach(message => {
+        // Convert URLs to clickable links
+        const html = message.innerHTML;
+        
+        // URL detection regex
+        const urlRegex = /(https?:\/\/[^\s]+)/g;
+        
+        // Replace URLs with clickable links
+        const withLinks = html.replace(urlRegex, function(url) {
+            // Clean up URL (remove trailing punctuation)
+            let cleanUrl = url.replace(/[.,;:!?)]+$/, '');
+            
+            // Check if already a link
+            if (cleanUrl.includes('href=')) return url;
+            
+            // Make it clickable
+            return `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="chat-link">${cleanUrl}</a>`;
+        });
+        
+        // Update only if changed
+        if (withLinks !== html) {
+            message.innerHTML = withLinks;
+        }
+    });
+    
+    // Add click event to newly created links
+    document.querySelectorAll('.chat-link').forEach(link => {
+        link.onclick = function(e) {
+            e.stopPropagation(); // Prevent bubbling
+            window.open(this.href, '_blank');
+            return false;
+        };
+    });
+}
+
+// Call after adding any new message
+const originalAddMessage = addMessage;
+addMessage = function(text, sender) {
+    originalAddMessage(text, sender);
+    
+    // Make links clickable after a short delay
+    setTimeout(makeLinksClickable, 100);
+    
+    // Lead capture logic (if you added it)
+    if (window.messageCount !== undefined) {
+        window.messageCount++;
+        if (window.messageCount === 3 && typeof showLeadModal === 'function') {
+            setTimeout(showLeadModal, 1000);
+        }
+    }
+};
+
+// Also add CSS for links
+const linkCSS = `
+.chat-link {
+    color: #667eea;
+    text-decoration: underline;
+    font-weight: 600;
+    word-break: break-all;
+}
+
+.chat-link:hover {
+    color: #764ba2;
+    text-decoration: none;
+}
+
+/* Mobile link fix */
+@media (max-width: 768px) {
+    .chat-link {
+        font-size: 14px;
+        padding: 2px 0;
+        display: inline-block;
+    }
+}
+`;
+
+// Inject the CSS
+const style = document.createElement('style');
+style.textContent = linkCSS;
+document.head.appendChild(style);
+
+// Initial call to make existing links clickable
+setTimeout(makeLinksClickable, 500);
+// ===== END CLICKABLE LINKS =====
