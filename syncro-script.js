@@ -10,7 +10,27 @@ body: JSON.stringify({
 const chatMessages = document.getElementById('chatMessages');
 const userInput = document.getElementById('userInput');
 const sendButton = document.getElementById('sendButton');
+const typingIndicator = document.getElementById('typingIndicator');
 
+function showTyping() {
+    if (typingIndicator) typingIndicator.style.display = 'block';
+}
+
+function hideTyping() {
+    if (typingIndicator) typingIndicator.style.display = 'none';
+}
+
+// Update sendToAI function:
+async function sendToAI(message) {
+    showTyping();
+    try {
+        // ... existing code ...
+    } catch (error) {
+        // ... error handling ...
+    } finally {
+        hideTyping();
+    }
+}
 async function sendToAI(message) {
     try {
         const response = await fetch(API_URL, {
