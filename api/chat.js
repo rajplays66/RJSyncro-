@@ -1,4 +1,4 @@
-// File: api/chat.js
+// File: api/chat.js (Groq with Llama 3.3)
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
@@ -7,71 +7,63 @@ export default async function handler(req, res) {
     try {
         const { message, system_instruction } = req.body;
         
-        // Validate
         if (!message) {
             return res.status(400).json({ error: 'Message is required' });
         }
         
-        // Get API key
-        const API_KEY = process.env.GEMINI_API_KEY;
+        const API_KEY = process.env.GROQ_API_KEY;
         
         if (!API_KEY) {
-            console.error('Missing API key');
-            return res.status(500).json({ error: 'Server configuration error' });
+            return res.status(500).json({ error: 'Missing GROQ_API_KEY' });
         }
         
-        // Prepare prompt
-const prompt = system_instruction 
-    ? `${system_instruction}\n\nUser: ${message}\nAssistant:`
-    : `User: ${message}\nAssistant:`;
-        
-        // Call Gemini
-        const response = await fetch(
-            `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`
+        const messages = [
             {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{
-                        parts: [{ text: prompt }]
-                    }]
-                })
+                role: "system",
+                content: system_instruction || "You are Syncro, AI assistant for RJSyncro tech blog. Help with web development, tech tools, and blog topics."
+            },
+            {
+                role: "user",
+                content: message
             }
-        );
+        ];
+        
+        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                model: 'llama-3.3-70b-versatile', // ← CHANGED TO THIS
+                messages: messages,
+                max_tokens: 300,
+                temperature: 0.7
+            })
+        });
         
         const data = await response.json();
-
-// Check for Gemini API errors
-if (!response.ok) {
-    console.error('Gemini API Error:', data);
-    return res.status(response.status).json({ 
-        error: data.error?.message || 'Gemini API error' 
-    });
-}
-
-// Extract the text properly
-if (data.candidates && data.candidates[0] && data.candidates[0].content) {
-    const replyText = data.candidates[0].content.parts[0].text;
-    res.status(200).json({ 
-        candidates: [{ 
-            content: { 
-                parts: [{ text: replyText }] 
-            } 
-        }] 
-    });
-} else {
-    // Handle empty or unexpected response
-    res.status(200).json({ 
-        candidates: [{ 
-            content: { 
-                parts: [{ text: "I'm having trouble responding right now." }] 
-            } 
-        }] 
-    });
-}
+        
+        if (!response.ok) {
+            console.error('Groq Error:', data);
+            return res.status(response.status).json({ 
+                error: data.error?.message || 'API error' 
+            });
+        }
+        
+        const replyText = data.choices?.[0]?.message?.content || "No response.";
+        
+        // Keep your frontend format
+        res.status(200).json({
+            candidates: [{
+                content: {
+                    parts: [{ text: replyText }]
+                }
+            }]
+        });
         
     } catch (error) {
-        console.error('API Error:', error);
+        console.error('Server Error:', error);
         res.status(500).json({ error: error.message });
     }
 }
