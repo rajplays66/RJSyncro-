@@ -108,7 +108,35 @@ export default async function handler(req, res) {
         text.includes('what can you do') || text.includes('business offer')) {
         return Object.keys(PRODUCTS);
     }
-    
+    // ===== BUSINESS FAQ DATABASE =====
+const BUSINESS_FAQ = {
+    "how to buy": "You can purchase directly on our website with credit card or PayPal. Most products offer instant digital delivery.",
+    "how to purchase": "Visit our website, select your product, add to cart, and checkout. You'll receive download links immediately.",
+    "support": "Email us at support@synchrotech.com or use our contact form. We reply within 24 hours.",
+    "contact": "Email: hello@synchrotech.com | Phone: +1 (555) 123-4567 (Mon-Fri 9AM-6PM)",
+    "refund": "We offer 30-day money-back guarantee on digital products if you're not satisfied.",
+    "license": "All products come with commercial license. You can use them for client projects.",
+    "updates": "Products include 1 year of free updates. You'll get notifications when new versions are released.",
+    "requirements": "Our products work on any modern browser. Some require basic HTML/CSS knowledge.",
+    "customization": "Yes! All products are fully customizable. We provide documentation and examples.",
+    "team": "We're a team of 5 developers and designers based in San Francisco, founded in 2023.",
+    "discount": "We offer 20% student discount and bulk discounts for 3+ products. Contact sales.",
+    "demo": "You can request a live demo by contacting our sales team. We'll schedule a Zoom call.",
+    "integration": "Our products integrate with popular tools like Stripe, Mailchimp, Google Analytics.",
+    "timeline": "Digital products: Instant delivery | Custom projects: 2-8 weeks depending on scope."
+};
+
+// Helper to check FAQ
+const checkFAQ = (text) => {
+    text = text.toLowerCase();
+    for (const [keyword, answer] of Object.entries(BUSINESS_FAQ)) {
+        if (text.includes(keyword)) {
+            return answer;
+        }
+    }
+    return null;
+};
+// ===== END FAQ =====
     return matches;
 };
         const relevantProducts = detectProducts(message);
