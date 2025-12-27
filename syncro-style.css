@@ -27,13 +27,20 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+    overflow-x: hidden;
+    max-width: 100%;
 }
-/* TOUCH-FRIENDLY LINKS & BUTTONS - ADD HERE */
-a, button {
-  min-height: 44px;
-  min-width: 44px;
-  padding: 12px 16px;
+
+/* TOUCH-FRIENDLY LINKS & BUTTONS */
+a, button, .btn, input[type="submit"], input[type="button"] {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px 16px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
 }
+
 /* Main Chat Container */
 .chat-container {
     width: 100%;
@@ -268,164 +275,44 @@ a, button {
 .chat-messages::-webkit-scrollbar-thumb {
     background: var(--accent-color);
     border-radius: 4px;
-      }
+}
+
 /* Custom AI Logo Styles */
 .ai-logo, .message-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #00ffff;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #00ffff;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
 }
 
 /* Header logo (larger) */
 .bot-avatar .ai-logo {
-  width: 70px;
-  height: 70px;
-  border-width: 3px;
+    width: 70px;
+    height: 70px;
+    border-width: 3px;
 }
 
 /* Remove old icon styles if they exist */
 .bot-avatar i,
 .message-sender i {
-  display: none;
+    display: none;
 }
 
 /* Make sure image displays properly */
 .bot-avatar,
 .message-sender {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 .ai-logo:hover, .message-avatar:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
-  transition: all 0.3s ease;
-}
-/* Typing Indicator Styles */
-.typing-indicator {
-    display: none; /* Hidden by default */
-    align-items: center;
-    gap: 15px;
-    padding: 15px 20px;
-    background: rgba(0, 255, 255, 0.05);
-    border-radius: 15px;
-    margin: 10px 0;
-    border-left: 3px solid #00ffff;
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+    transition: all 0.3s ease;
 }
 
-.typing-dots {
-    display: flex;
-    gap: 5px;
-}
-
-.typing-dots span {
-    width: 8px;
-    height: 8px;
-    background: #00ffff;
-    border-radius: 50%;
-    animation: typingBounce 1.4s infinite ease-in-out;
-}
-
-.typing-dots span:nth-child(1) { animation-delay: -0.32s; }
-.typing-dots span:nth-child(2) { animation-delay: -0.16s; }
-.typing-dots span:nth-child(3) { animation-delay: 0s; }
-
-@keyframes typingBounce {
-    0%, 80%, 100% { 
-        transform: scale(0);
-        opacity: 0.5;
-    }
-    40% { 
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-.typing-indicator p {
-    color: #00ffff;
-    font-size: 14px;
-    margin: 0;
-    font-weight: 500;
-}
-/* Message Container */
-.chat-messages {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    padding: 20px;
-    overflow-y: auto;
-}
-
-/* User Messages (Right Side) */
-.user-message {
-    align-self: flex-end;
-    background: linear-gradient(135deg, #00ffff, #0088ff);
-    color: white;
-    padding: 12px 18px;
-    border-radius: 20px 20px 5px 20px;
-    max-width: 70%;
-    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.2);
-    animation: slideInRight 0.3s ease;
-}
-
-/* AI Messages (Left Side) */
-.ai-message {
-    align-self: flex-start;
-    background: rgba(255, 255, 255, 0.1);
-    color: #f0f0f0;
-    padding: 12px 18px;
-    border-radius: 20px 20px 20px 5px;
-    max-width: 70%;
-    border-left: 3px solid #00ffff;
-    animation: slideInLeft 0.3s ease;
-}
-
-/* Animations */
-@keyframes slideInRight {
-    from {
-        transform: translateX(30px);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slideInLeft {
-    from {
-        transform: translateX(-30px);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-/* Message Sender Labels */
-.user-message strong {
-    display: block;
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 5px;
-}
-
-.ai-message strong {
-    display: block;
-    font-size: 12px;
-    color: #00ffff;
-    margin-bottom: 5px;
-}
-
-/* Message Content */
-.message-content {
-    font-size: 16px;
-    line-height: 1.5;
-}
 /* ===== BUSINESS PRODUCT STYLES ===== */
 .product-sidebar {
     background: white;
@@ -464,6 +351,10 @@ a, button {
     padding: 15px;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-align: left;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .product-item:hover {
@@ -500,7 +391,7 @@ a, button {
     display: block;
 }
 
-.contact-btn {
+.contact-btn, .contact-link {
     background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
     color: white;
     border: none;
@@ -514,64 +405,90 @@ a, button {
     justify-content: center;
     gap: 8px;
     transition: all 0.3s;
+    text-decoration: none;
+    min-height: 44px;
+    box-sizing: border-box;
 }
 
-.contact-btn:hover {
+.contact-btn:hover, .contact-link:hover {
     transform: translateY(-3px);
     box-shadow: 0 7px 20px rgba(76, 175, 80, 0.3);
 }
 
-/* Business chat styling */
-.bot-message {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border-radius: 18px 18px 18px 5px;
-}
-
-.user-message {
-    background: #f1f5f9;
-    border-radius: 18px 18px 5px 18px;
-}
-
-/* Price highlight in messages */
-.price-highlight {
-    background: #4CAF50;
-    color: white;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 13px;
-    font-weight: 600;
-    margin-left: 5px;
-}
-/* Product buttons styling */
+/* ===== PRODUCT BUTTONS & LINKS ===== */
 .product-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
     animation: fadeIn 0.5s ease;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+.product-buttons button, 
+.product-buttons a {
+    flex: 1;
+    min-width: 120px;
+    min-height: 44px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 2px solid #e2e8f0;
+    background: white;
+    color: #2d3748;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
 }
 
-.product-buttons button {
-    background: white !important;
-    border: 2px solid #e2e8f0 !important;
-    border-radius: 8px !important;
-    padding: 10px 15px !important;
-    margin: 5px !important;
-    cursor: pointer !important;
-    font-size: 14px !important;
-    transition: all 0.3s !important;
-    color: #2d3748 !important;
+.product-buttons button:hover, 
+.product-buttons a:hover {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
 }
 
-.product-buttons button:hover {
-    background: #667eea !important;
-    color: white !important;
-    border-color: #667eea !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2) !important;
+/* ===== PAYMENT/BUY BUTTONS ===== */
+.buy-button, .demo-button {
+    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 10px 5px;
+    transition: all 0.3s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 44px;
+    min-width: 44px;
+    text-decoration: none;
+    box-sizing: border-box;
 }
+
+.demo-button {
+    background: linear-gradient(135deg, #9C27B0 0%, #673AB7 100%);
+}
+
+.buy-button:hover, .demo-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+}
+
+.demo-button:hover {
+    box-shadow: 0 10px 25px rgba(156, 39, 176, 0.3);
+}
+
 /* ===== LEAD CAPTURE MODAL ===== */
 .lead-modal {
     position: fixed;
@@ -606,10 +523,6 @@ a, button {
     gap: 10px;
 }
 
-.modal-content h3 i {
-    color: #667eea;
-}
-
 .modal-content p {
     color: #718096;
     margin-bottom: 20px;
@@ -618,13 +531,14 @@ a, button {
 
 .modal-content input {
     width: 100%;
-    padding: 12px 15px;
-    margin: 8px 0;
+    padding: 14px 16px;
+    margin: 10px 0;
     border: 2px solid #e2e8f0;
     border-radius: 8px;
     font-size: 16px;
     transition: all 0.3s;
     box-sizing: border-box;
+    min-height: 48px;
 }
 
 .modal-content input:focus {
@@ -635,24 +549,34 @@ a, button {
 
 .modal-buttons {
     display: flex;
-    gap: 10px;
-    margin-top: 20px;
+    gap: 15px;
+    margin-top: 25px;
 }
 
-.submit-btn {
-    flex: 2;
-    background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
-    color: white;
-    border: none;
-    padding: 14px;
+.submit-btn, .cancel-btn {
+    flex: 1;
+    padding: 15px;
     border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
+    transition: all 0.3s;
+    min-height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
-    transition: all 0.3s;
+    border: none;
+    font-size: 16px;
+}
+
+.submit-btn {
+    background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+    color: white;
+}
+
+.cancel-btn {
+    background: #f1f5f9;
+    color: #64748b;
+    border: 2px solid #e2e8f0;
 }
 
 .submit-btn:hover {
@@ -660,187 +584,10 @@ a, button {
     box-shadow: 0 7px 20px rgba(76, 175, 80, 0.3);
 }
 
-.cancel-btn {
-    flex: 1;
-    background: #f1f5f9;
-    color: #64748b;
-    border: 2px solid #e2e8f0;
-    padding: 14px;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-}
-
 .cancel-btn:hover {
     background: #e2e8f0;
 }
 
-/* ===== PAYMENT/BUY BUTTONS ===== */
-.buy-button {
-    background: linear-gradient(135deg, #FF6B6B 0%, #FF8E53 100%);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 10px 5px;
-    transition: all 0.3s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.buy-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
-}
-
-.buy-button i {
-    font-size: 16px;
-}
-
-/* Demo/Calendar button */
-.demo-button {
-    background: linear-gradient(135deg, #9C27B0 0%, #673AB7 100%);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    margin: 10px 5px;
-    transition: all 0.3s;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.demo-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(156, 39, 176, 0.3);
-}
-
-/* ===== ANALYTICS BADGE (optional visual) ===== */
-.analytics-badge {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-    background: #2d3748;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    opacity: 0.7;
-    cursor: help;
-    z-index: 100;
-}
-
-.analytics-badge:hover {
-    opacity: 1;
-}
-
-/* ===== ANIMATIONS ===== */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes slideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-/* ===== PRODUCT HIGHLIGHT ===== */
-.product-highlight {
-    background: linear-gradient(120deg, #a5b4fc30 0%, #c4b5fd30 100%);
-    border-left: 4px solid #667eea;
-    padding: 15px;
-    border-radius: 8px;
-    margin: 15px 0;
-    animation: pulse 2s infinite;
-}
-
-.price-tag-large {
-    background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
-    color: white;
-    padding: 5px 15px;
-    border-radius: 20px;
-    font-weight: bold;
-    font-size: 18px;
-    display: inline-block;
-    margin: 10px 0;
-}
-
-/* ===== RESPONSIVE DESIGN ===== */
-@media (max-width: 768px) {
-    .modal-content {
-        width: 95%;
-        padding: 20px;
-    }
-    
-    .modal-buttons {
-        flex-direction: column;
-    }
-    
-    .buy-button, .demo-button {
-        width: 100%;
-        margin: 5px 0;
-    }
-    
-    .product-sidebar {
-        margin: 10px;
-        padding: 15px;
-    }
-}
-
-/* ===== CHAT ENHANCEMENTS ===== */
-.ai-message .product-mention {
-    background: #4CAF50;
-    color: white;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: 600;
-    margin-left: 5px;
-}
-
-.ai-message .price-mention {
-    background: #FF9800;
-    color: white;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 14px;
-    font-weight: bold;
-    margin-left: 5px;
-}
-
-/* Link styling in messages */
-.ai-message a {
-    color: #667eea;
-    text-decoration: none;
-    font-weight: 600;
-    border-bottom: 2px dotted #667eea;
-    padding-bottom: 1px;
-}
-
-.ai-message a:hover {
-    color: #764ba2;
-    border-bottom: 2px solid #764ba2;
-}
 /* ===== MOBILE RESPONSIVE FIXES ===== */
 @media (max-width: 768px) {
     /* Chat container */
@@ -849,78 +596,160 @@ a, button {
         height: 100vh;
         margin: 0;
         border-radius: 0;
-    }
-    
-    /* Chat messages */
-    .chat-messages {
-        padding: 10px;
-        max-height: 70vh;
-    }
-    
-    /* Message bubbles */
-    .ai-message, .user-message {
-        max-width: 85%;
-        font-size: 14px;
-        line-height: 1.4;
-        padding: 12px 15px;
-    }
-    
-    /* Input area */
-    .input-area {
-        padding: 15px;
-    }
-    
-    #userInput {
-        font-size: 16px; /* Prevents zoom on iOS */
-        padding: 12px 15px;
-    }
-    
-    #sendButton {
-        width: 50px;
-        height: 50px;
-    }
-    
-    /* Product sidebar */
-    .product-sidebar {
-        margin: 10px;
-        padding: 15px;
-        font-size: 14px;
-    }
-    
-    .product-item {
-        padding: 10px;
-        margin: 5px 0;
-    }
-    
-    /* Modal */
-    .modal-content {
-        width: 90%;
-        max-width: none;
-        padding: 20px;
+        max-width: 100%;
     }
     
     /* Header */
     .chat-header {
         padding: 15px;
+        flex-wrap: wrap;
     }
     
-    .bot-info b {
-        font-size: 18px;
+    .bot-avatar {
+        width: 40px;
+        height: 40px;
+        font-size: 1.4rem;
+        margin-right: 12px;
+    }
+    
+    .bot-info h2 {
+        font-size: 1.2rem;
+    }
+    
+    .bot-tagline {
+        font-size: 0.8rem;
+    }
+    
+    /* Chat messages */
+    .chat-messages {
+        padding: 15px;
+        gap: 15px;
+    }
+    
+    /* Message bubbles */
+    .ai-message, .user-message, .message {
+        max-width: 90%;
+        font-size: 14px;
+        line-height: 1.4;
+        padding: 12px 15px;
+        margin: 5px 0;
+    }
+    
+    .message-avatar {
+        width: 32px;
+        height: 32px;
+        font-size: 0.9rem;
+        margin: 0 8px;
+    }
+    
+    /* Input area */
+    .input-area {
+        padding: 15px;
+        gap: 10px;
+    }
+    
+    .input-area input {
+        font-size: 16px;
+        padding: 14px 16px;
+        min-height: 48px;
+    }
+    
+    .input-area button {
+        width: 48px;
+        height: 48px;
+        font-size: 1.1rem;
+        min-width: 48px;
+        min-height: 48px;
+    }
+    
+    /* Product sidebar */
+    .product-sidebar {
+        margin: 10px 5px;
+        padding: 15px;
+        font-size: 14px;
+    }
+    
+    .product-item {
+        padding: 12px;
+        margin: 8px 0;
+        width: 100%;
+    }
+    
+    .product-item strong {
+        font-size: 15px;
+    }
+    
+    /* Product buttons */
+    .product-buttons {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .product-buttons button, 
+    .product-buttons a {
+        width: 100%;
+        min-width: 100%;
+        margin: 2px 0;
+        padding: 14px;
+        font-size: 15px;
+    }
+    
+    /* Buttons */
+    .buy-button, .demo-button, .contact-btn, .contact-link {
+        width: 100%;
+        margin: 8px 0;
+        padding: 16px;
+        font-size: 16px;
+        display: block;
+        text-align: center;
+    }
+    
+    /* Modal */
+    .modal-content {
+        width: 95%;
+        max-width: 95%;
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .modal-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .submit-btn, .cancel-btn {
+        width: 100%;
     }
     
     /* Footer */
     .chat-footer {
         font-size: 12px;
-        padding: 10px;
+        padding: 12px;
+    }
+    
+    /* Make all links and buttons touch-friendly */
+    a, button, .btn, .product-item, .contact-link {
+        display: block;
+        width: 100%;
+        padding: 14px 20px;
+        margin: 8px 0;
+        text-align: center;
+        box-sizing: border-box;
+        min-height: 48px;
+        min-width: 48px;
     }
 }
 
 /* Extra small phones */
 @media (max-width: 480px) {
-    .ai-message, .user-message {
-        max-width: 90%;
+    .ai-message, .user-message, .message {
+        max-width: 95%;
         font-size: 13px;
         padding: 10px 12px;
+    }
+    
+    .message-content {
+        padding: 12px 15px;
     }
     
     .product-sidebar h3 {
@@ -930,31 +759,56 @@ a, button {
     .product-item strong {
         font-size: 14px;
     }
-}
-
-/* Prevent horizontal scroll */
-body {
-    overflow-x: hidden;
-    max-width: 100%;
+    
+    .input-area input {
+        font-size: 15px;
+        padding: 12px 14px;
+    }
+    
+    .modal-content {
+        padding: 15px;
+    }
+    
+    .modal-content h3 {
+        font-size: 18px;
+    }
+    
+    .modal-content input {
+        padding: 12px 14px;
+        font-size: 15px;
+    }
 }
 
 /* Fix for mobile keyboard */
 @media (max-height: 600px) {
     .chat-messages {
         max-height: 60vh;
+        padding: 10px;
+    }
+    
+    .chat-header {
+        padding: 10px 15px;
+    }
+    
+    .input-area {
+        padding: 10px 15px;
     }
 }
-/* ========== MOBILE FIXES ========== */
-@media (max-width: 768px) {
-  a {
-    display: block;
-    padding: 12px 16px;
-    text-align: center;
-    margin: 4px 0;
-  }
-  
-  .product-links, .contact-link {
-    width: 100%;
-    box-sizing: border-box;
-  }
+
+/* Prevent text overflow on small screens */
+.message-content, .product-item, .modal-content p {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
 }
+
+/* Ensure links are always visible and tap-friendly */
+a:focus, button:focus, input:focus {
+    outline: 2px solid #667eea;
+    outline-offset: 2px;
+}
+
+/* Smooth transitions */
+* {
+    -webkit-tap-highlight-color: transparent;
+    }
