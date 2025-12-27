@@ -538,3 +538,32 @@ body {
     font-weight: 600;
     margin-left: 5px;
 }
+/* Product buttons styling */
+.product-buttons {
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.product-buttons button {
+    background: white !important;
+    border: 2px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    padding: 10px 15px !important;
+    margin: 5px !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+    transition: all 0.3s !important;
+    color: #2d3748 !important;
+}
+
+.product-buttons button:hover {
+    background: #667eea !important;
+    color: white !important;
+    border-color: #667eea !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2) !important;
+}
