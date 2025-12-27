@@ -421,3 +421,120 @@ body {
     font-size: 16px;
     line-height: 1.5;
 }
+/* ===== BUSINESS PRODUCT STYLES ===== */
+.product-sidebar {
+    background: white;
+    border-left: 4px solid #667eea;
+    padding: 20px;
+    margin: 15px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.15);
+    font-family: 'Inter', sans-serif;
+}
+
+.product-sidebar h3 {
+    color: #2d3748;
+    margin-bottom: 15px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.product-sidebar h3 i {
+    color: #667eea;
+}
+
+.product-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.product-item {
+    background: #f8fafc;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.product-item:hover {
+    background: #667eea;
+    border-color: #667eea;
+    transform: translateX(5px);
+}
+
+.product-item:hover strong,
+.product-item:hover .price,
+.product-item:hover small {
+    color: white;
+}
+
+.product-item strong {
+    color: #2d3748;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+
+.price {
+    color: #4CAF50;
+    font-weight: bold;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.product-item small {
+    color: #718096;
+    font-size: 12px;
+    display: block;
+}
+
+.contact-btn {
+    background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+    color: white;
+    border: none;
+    padding: 14px;
+    border-radius: 10px;
+    width: 100%;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s;
+}
+
+.contact-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(76, 175, 80, 0.3);
+}
+
+/* Business chat styling */
+.bot-message {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 18px 18px 18px 5px;
+}
+
+.user-message {
+    background: #f1f5f9;
+    border-radius: 18px 18px 5px 18px;
+}
+
+/* Price highlight in messages */
+.price-highlight {
+    background: #4CAF50;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    margin-left: 5px;
+}
