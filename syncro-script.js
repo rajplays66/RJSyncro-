@@ -118,3 +118,71 @@ userInput.addEventListener('keypress', (e) => {
         sendButton.click();
     }
 });
+// ===== PRODUCT BUTTONS FUNCTION =====
+function showProductButtons(products) {
+    // Remove any existing product buttons
+    const existingButtons = document.querySelector('.product-buttons');
+    if (existingButtons) {
+        existingButtons.remove();
+    }
+    
+    // Create container
+    const buttonContainer = document.createElement('div');
+    buttonContainer.className = 'product-buttons';
+    buttonContainer.style.cssText = `
+        margin: 15px 0;
+        padding: 15px;
+        background: #f8fafc;
+        border-radius: 10px;
+        border-left: 4px solid #667eea;
+    `;
+    
+    // Add title
+    const title = document.createElement('p');
+    title.textContent = '📦 Related Products:';
+    title.style.cssText = `
+        margin-bottom: 10px;
+        font-weight: 600;
+        color: #2d3748;
+    `;
+    buttonContainer.appendChild(title);
+    
+    // Add buttons for each product
+    products.forEach(product => {
+        const button = document.createElement('button');
+        button.textContent = `🔍 ${product.name} (${product.price})`;
+        button.style.cssText = `
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        `;
+        button.onmouseover = () => {
+            button.style.background = '#667eea';
+            button.style.color = 'white';
+            button.style.borderColor = '#667eea';
+        };
+        button.onmouseout = () => {
+            button.style.background = 'white';
+            button.style.color = 'black';
+            button.style.borderColor = '#e2e8f0';
+        };
+        button.onclick = () => {
+            document.getElementById('userInput').value = `Tell me more about ${product.name}`;
+            document.getElementById('sendButton').click();
+        };
+        buttonContainer.appendChild(button);
+    });
+    
+    // Add to chat
+    const chatMessages = document.getElementById('chatMessages');
+    if (chatMessages) {
+        chatMessages.appendChild(buttonContainer);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+}
+// ===== END PRODUCT BUTTONS =====
