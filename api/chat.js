@@ -40,9 +40,35 @@ export default async function handler(req, res) {
         );
         
         const data = await response.json();
-        
-        // Return response
-        res.status(200).json(data);
+
+// Check for Gemini API errors
+if (!response.ok) {
+    console.error('Gemini API Error:', data);
+    return res.status(response.status).json({ 
+        error: data.error?.message || 'Gemini API error' 
+    });
+}
+
+// Extract the text properly
+if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+    const replyText = data.candidates[0].content.parts[0].text;
+    res.status(200).json({ 
+        candidates: [{ 
+            content: { 
+                parts: [{ text: replyText }] 
+            } 
+        }] 
+    });
+} else {
+    // Handle empty or unexpected response
+    res.status(200).json({ 
+        candidates: [{ 
+            content: { 
+                parts: [{ text: "I'm having trouble responding right now." }] 
+            } 
+        }] 
+    });
+}
         
     } catch (error) {
         console.error('API Error:', error);
