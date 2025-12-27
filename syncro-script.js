@@ -1,64 +1,80 @@
-    // ULTRA SIMPLE WORKING VERSION
-document.addEventListener('DOMContentLoaded', function() {
-    const button = document.getElementById('sendButton');
-    const input = document.getElementById('userInput');
-    const messages = document.getElementById('chatMessages');
-    
-    if (!button || !input || !messages) {
-        console.error('Missing elements! Check HTML IDs');
-        return;
-    }
-    
-    button.addEventListener('click', sendMessage);
-    input.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') sendMessage();
-    });
-    
-    async function sendMessage() {
-        const text = input.value.trim();
-        if (!text) return;
+// SIMPLE VERSION - NO ERRORS
+const API_URL = '/api/chat';
+
+const chatMessages = document.getElementById('chatMessages');
+const userInput = document.getElementById('userInput');
+const sendButton = document.getElementById('sendButton');
+const typingIndicator = document.getElementById('typingIndicator');
+
+async function sendToAI(message) {
+    showTyping();
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({message: message})
+        });
         
-        // Show user message
-        addMessage('You: ' + text);
-        input.value = '';
-        
-        // Send to AI
-        try {
-            const response = await fetch('/api/chat', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({message: text})
-            });
-            
-            const data = await response.json();
-            const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response';
-            addMessage('Syncro: ' + aiText);
-            
-        } catch (error) {
-            addMessage('Error: ' + error.message);
+        if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
         }
+        
+        const data = await response.json();
+        
+        if (data.candidates && data.candidates[0]) {
+            return data.candidates[0].content.parts[0].text;
+        }
+        return "Error: No response from AI";
+        
+    } catch (error) {
+        console.error('AI Error:', error);
+        return `Error: ${error.message}`;
+    } finally {
+        hideTyping();
     }
-    function addMessage(text, sender) {
+}
+
+// NEW UPDATED FUNCTION (REPLACE OLD ONE)
+function addMessage(text, sender) {
     const messageDiv = document.createElement('div');
-    messageDiv.className = `${sender}-message`; // Creates 'user-message' or 'ai-message'
+    messageDiv.className = `${sender}-message`;
     
-    // Add sender label
     const senderLabel = document.createElement('strong');
     senderLabel.textContent = sender === 'user' ? 'You' : 'Syncro';
     
-    // Add message text
     const textDiv = document.createElement('div');
     textDiv.className = 'message-content';
     textDiv.textContent = text;
     
-    // Assemble message
     messageDiv.appendChild(senderLabel);
     messageDiv.appendChild(textDiv);
-    
-    // Add to chat
     chatMessages.appendChild(messageDiv);
     
-    // Scroll to bottom
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
+
+function showTyping() {
+    if (typingIndicator) typingIndicator.style.display = 'block';
+}
+
+function hideTyping() {
+    if (typingIndicator) typingIndicator.style.display = 'none';
+}
+
+sendButton.addEventListener('click', async () => {
+    const message = userInput.value.trim();
+    if (!message) return;
     
+    addMessage(message, 'user');
+    userInput.value = '';
+    
+    const reply = await sendToAI(message);
+    addMessage(reply, 'ai');
+});
+
+userInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendButton.click();
+    }
+});
