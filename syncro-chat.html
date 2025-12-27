@@ -104,5 +104,54 @@ function askAboutProduct(productName) {
 </script>
 <!-- ===== END PRODUCT SIDEBAR ===== -->
     <script src="syncro-script.js"></script>
+<!-- LEAD CAPTURE MODAL -->
+<div id="leadModal" class="lead-modal" style="display: none;">
+    <div class="modal-content">
+        <h3><i class="fas fa-gift"></i> Get Exclusive Offers!</h3>
+        <p>Share your email for special discounts and updates.</p>
+        <input type="email" id="leadEmail" placeholder="your@email.com">
+        <input type="text" id="leadName" placeholder="Your Name (Optional)">
+        <div class="modal-buttons">
+            <button onclick="submitLead()" class="submit-btn">
+                <i class="fas fa-paper-plane"></i> Get Offers
+            </button>
+            <button onclick="closeLeadModal()" class="cancel-btn">
+                Maybe Later
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+// Lead capture logic
+function showLeadModal() {
+    // Show after 3rd message or when product mentioned
+    document.getElementById('leadModal').style.display = 'flex';
+}
+
+function submitLead() {
+    const email = document.getElementById('leadEmail').value;
+    const name = document.getElementById('leadName').value;
+    
+    // Send to your backend (simplified)
+    fetch('/api/leads', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({ email, name, source: 'chat' })
+    });
+    
+    alert('Thank you! You\'ll hear from us soon.');
+    closeLeadModal();
+}
+
+function closeLeadModal() {
+    document.getElementById('leadModal').style.display = 'none';
+}
+
+// Auto-show modal logic (add to your sendToAI function)
+let messageCount = 0;
+// In sendToAI, add: messageCount++;
+// if (messageCount === 3) showLeadModal();
+</script>
 </body>
 </html>
