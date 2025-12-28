@@ -1,39 +1,37 @@
-// SIMPLE VERSION - NO ERRORS
+// Syncro AI Chat - Product Knowledge (No Buttons)
 const API_URL = '/api/chat';
 const SYSTEM_INSTRUCTION = `You are Syncro, AI assistant for SyncroTech Solutions.
 
-COMPANY INFO:
-- Name: SyncroTech Solutions
-- Type: Premium tech product company
-- Products: SaaS tools, web templates, AI systems, custom development
+COMPANY & PRODUCT KNOWLEDGE:
+- Company: SyncroTech Solutions (Premium tech company)
 - Values: Quality, innovation, customer success
 
+AVAILABLE PRODUCTS (for information only):
+1. Web Templates ($49-$199): Professional, responsive website templates for businesses
+2. SaaS Starter Kit ($299): Complete SaaS boilerplate with authentication, payments, and admin panel
+3. AI Chat System ($199 one-time): Customizable AI assistant system (like this one)
+4. Custom Development (Custom quote): Tailored web applications and solutions
+
 YOUR ROLE:
-1. PRODUCT EXPERT: Know all products inside-out
-2. SALES ASSISTANT: Help customers choose right products
-3. SUPPORT: Answer pre-sale questions professionally
-4. CLOSER: Encourage purchases (subtly, helpfully)
+1. HELPFUL ASSISTANT: Answer questions clearly and professionally
+2. PRODUCT INFORMATION: Mention products when relevant to user questions
+3. NO PUSHING: Never push products unless user specifically asks
+4. SUPPORT: Help users with their inquiries
 
-KEY PRODUCTS:
-1. Web Templates ($49-$199): Responsive business website templates
-2. SaaS Starter Kit ($299): Complete SaaS boilerplate with auth & payments
-3. AI Chat System ($199 one-time): Customizable AI assistant (like this one!)
-4. Custom Development (Custom quote): Tailored web applications
+RESPONSE GUIDELINES:
+- Be professional but friendly
+- If user asks about products, provide accurate information
+- Never initiate product conversations
+- If user seems interested, mention relevant products ONCE
+- Focus on helping, not selling
+- Prices are fixed - no negotiations`;
 
-RESPONSE RULES:
-- Always be professional but friendly
-- Highlight benefits, not just features
-- Suggest the most suitable product
-- Provide clear pricing when asked
-- If unsure, offer to connect to human support
-- Never say "I'm just an AI" - you're a company representative
-
-END every response with a relevant product suggestion if appropriate.`;
 const chatMessages = document.getElementById('chatMessages');
 const userInput = document.getElementById('userInput');
 const sendButton = document.getElementById('sendButton');
 const typingIndicator = document.getElementById('typingIndicator');
 
+// Send message to AI
 async function sendToAI(message) {
     showTyping();
     try {
@@ -51,13 +49,7 @@ async function sendToAI(message) {
         }
         
         const data = await response.json();
-        // Show product buttons if backend suggests products
-if (data.metadata?.suggestedProducts?.length > 0) {
-    // Small delay to show after message appears
-    setTimeout(() => {
-        showProductButtons(data.metadata.suggestedProducts);
-    }, 300);
-}
+        
         if (data.candidates && data.candidates[0] && data.candidates[0].content) {
             return data.candidates[0].content.parts[0].text;
         } else if (data.error) {
@@ -72,49 +64,9 @@ if (data.metadata?.suggestedProducts?.length > 0) {
     } finally {
         hideTyping();
     }
-    // PRODUCT BUTTONS FUNCTION - ADD THIS WHERE IT WAS CUT OFF
-function showProductButtons(products) {
-    // Remove any existing product buttons
-    const existingButtons = document.querySelectorAll('.product-button');
-    existingButtons.forEach(button => button.remove());
-    
-    // Create container for product buttons
-    const buttonContainer = document.createElement('div');
-    buttonContainer.className = 'product-buttons-container';
-    buttonContainer.style.marginTop = '10px';
-    buttonContainer.style.display = 'flex';
-    buttonContainer.style.flexWrap = 'wrap';
-    buttonContainer.style.gap = '8px';
-    
-    // Create a button for each suggested product
-    products.forEach(product => {
-        const button = document.createElement('button');
-        button.className = 'product-button';
-        button.textContent = product.name || `Product: ${product.id}`;
-        button.style.padding = '8px 12px';
-        button.style.backgroundColor = '#007bff';
-        button.style.color = 'white';
-        button.style.border = 'none';
-        button.style.borderRadius = '4px';
-        button.style.cursor = 'pointer';
-        button.style.fontSize = '14px';
-        
-        // Add click handler for product selection
-        button.addEventListener('click', () => {
-            userInput.value = `Tell me more about ${product.name || 'this product'}`;
-            sendbutton.click();
-        });
-        
-        buttonContainer.appendChild(button);
-    });
-    
-    // Add the buttons to the chat
-    chatMessages.appendChild(buttonContainer);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
 }
 
-// NEW UPDATED FUNCTION (REPLACE OLD ONE)
+// Add message to chat (clean version - no buttons)
 function addMessage(text, sender) {
     const messageDiv = document.createElement('div');
     messageDiv.className = `${sender}-message`;
@@ -124,194 +76,120 @@ function addMessage(text, sender) {
     
     const textDiv = document.createElement('div');
     textDiv.className = 'message-content';
-    textDiv.textContent = text;
+    
+    // Process text to make URLs clickable
+    const processedText = makeLinksClickable(text);
+    textDiv.innerHTML = processedText;
     
     messageDiv.appendChild(senderLabel);
     messageDiv.appendChild(textDiv);
     chatMessages.appendChild(messageDiv);
     
+    // Scroll to bottom
     chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
+// Make URLs clickable (returns HTML)
+function makeLinksClickable(text) {
+    // Simple URL detection and replacement
+    const urlRegex = /(https?:\/\/[^\s<>]+[^\s<>.,;:!?)])(?![^<]*>)/g;
+    
+    return text.replace(urlRegex, url => {
+        const cleanUrl = url.replace(/[.,;:!?)]+$/, '');
+        return `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" 
+                class="chat-link">
+                ${cleanUrl}
+               </a>`;
+    });
+}
+
+// Show typing indicator
 function showTyping() {
-    if (typingIndicator) typingIndicator.style.display = 'block';
+    if (typingIndicator) {
+        typingIndicator.style.display = 'block';
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
 }
 
+// Hide typing indicator
 function hideTyping() {
-    if (typingIndicator) typingIndicator.style.display = 'none';
+    if (typingIndicator) {
+        typingIndicator.style.display = 'none';
+    }
 }
 
+// Send message when button clicked
 sendButton.addEventListener('click', async () => {
     const message = userInput.value.trim();
     if (!message) return;
     
     addMessage(message, 'user');
     userInput.value = '';
+    userInput.focus();
     
     const reply = await sendToAI(message);
     addMessage(reply, 'ai');
 });
 
+// Enter key support
 userInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         sendButton.click();
     }
 });
-// ===== PRODUCT BUTTONS FUNCTION =====
-function showProductButtons(products) {
-    // Remove any existing product buttons
-    const existingButtons = document.querySelector('.product-buttons');
-    if (existingButtons) {
-        existingButtons.remove();
-    }
-    
-    // Create container
-    const buttonContainer = document.createElement('div');
-    buttonContainer.className = 'product-buttons';
-    buttonContainer.style.cssText = `
-        margin: 15px 0;
-        padding: 15px;
-        background: #f8fafc;
-        border-radius: 10px;
-        border-left: 4px solid #667eea;
-    `;
-    
-    // Add title
-    const title = document.createElement('p');
-    title.textContent = '📦 Related Products:';
-    title.style.cssText = `
-        margin-bottom: 10px;
-        font-weight: 600;
-        color: #2d3748;
-    `;
-    buttonContainer.appendChild(title);
-    
-    // Add buttons for each product
-    products.forEach(product => {
-        const button = document.createElement('button');
-        button.textContent = `🔍 ${product.name} (${product.price})`;
-        button.style.cssText = `
-            background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 8px 12px;
-            margin: 5px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.3s;
-        `;
-        button.onmouseover = () => {
-            button.style.background = '#667eea';
-            button.style.color = 'white';
-            button.style.borderColor = '#667eea';
-        };
-        button.onmouseout = () => {
-            button.style.background = 'white';
-            button.style.color = 'black';
-            button.style.borderColor = '#e2e8f0';
-        };
-        button.onclick = () => {
-            document.getElementById('userInput').value = `Tell me more about ${product.name}`;
-            document.getElementById('sendButton').click();
-        };
-        buttonContainer.appendChild(button);
-    });
-    
-    // Add to chat
-    const chatMessages = document.getElementById('chatMessages');
-    if (chatMessages) {
-        chatMessages.appendChild(buttonContainer);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-}
-// ===== END PRODUCT BUTTONS =====
-// ===== CLICKABLE LINKS FIX =====
-function makeLinksClickable() {
-    // Find all AI messages
-    const aiMessages = document.querySelectorAll('.ai-message, .bot-message');
-    
-    aiMessages.forEach(message => {
-        // Convert URLs to clickable links
-        const html = message.innerHTML;
-        
-        // URL detection regex
-        const urlRegex = /(https?:\/\/[^\s]+)/g;
-        
-        // Replace URLs with clickable links
-        const withLinks = html.replace(urlRegex, function(url) {
-            // Clean up URL (remove trailing punctuation)
-            let cleanUrl = url.replace(/[.,;:!?)]+$/, '');
-            
-            // Check if already a link
-            if (cleanUrl.includes('href=')) return url;
-            
-            // Make it clickable
-            return `<a href="${cleanUrl}" target="_blank" rel="noopener noreferrer" class="chat-link">${cleanUrl}</a>`;
-        });
-        
-        // Update only if changed
-        if (withLinks !== html) {
-            message.innerHTML = withLinks;
-        }
-    });
-    
-    // Add click event to newly created links
-    document.querySelectorAll('.chat-link').forEach(link => {
-        link.onclick = function(e) {
-            e.stopPropagation(); // Prevent bubbling
-            window.open(this.href, '_blank');
-            return false;
-        };
-    });
-}
 
-// Call after adding any new message
-const originalAddMessage = addMessage;
-addMessage = function(text, sender) {
-    originalAddMessage(text, sender);
-    
-    // Make links clickable after a short delay
-    setTimeout(makeLinksClickable, 100);
-    
-    // Lead capture logic (if you added it)
-    if (window.messageCount !== undefined) {
-        window.messageCount++;
-        if (window.messageCount === 3 && typeof showLeadModal === 'function') {
-            setTimeout(showLeadModal, 1000);
-        }
-    }
-};
-
-// Also add CSS for links
+// Add CSS for links
 const linkCSS = `
 .chat-link {
-    color: #667eea;
+    color: #06b6d4;
     text-decoration: underline;
-    font-weight: 600;
+    font-weight: 500;
     word-break: break-all;
+    transition: color 0.2s;
 }
 
 .chat-link:hover {
-    color: #764ba2;
+    color: #22d3ee;
     text-decoration: none;
 }
 
-/* Mobile link fix */
+/* Mobile friendly */
 @media (max-width: 768px) {
     .chat-link {
-        font-size: 14px;
-        padding: 2px 0;
-        display: inline-block;
+        font-size: 15px;
+        padding: 1px 0;
     }
 }
 `;
 
-// Inject the CSS
-const style = document.createElement('style');
-style.textContent = linkCSS;
-document.head.appendChild(style);
+// Inject CSS
+if (!document.querySelector('#chat-link-styles')) {
+    const style = document.createElement('style');
+    style.id = 'chat-link-styles';
+    style.textContent = linkCSS;
+    document.head.appendChild(style);
+}
 
-// Initial call to make existing links clickable
-setTimeout(makeLinksClickable, 500);
-// ===== END CLICKABLE LINKS =====
+// Initialize chat on load
+document.addEventListener('DOMContentLoaded', () => {
+    // Focus input
+    if (userInput) {
+        userInput.focus();
+    }
+    
+    // Add welcome message after a brief delay
+    setTimeout(() => {
+        if (chatMessages && chatMessages.children.length === 0) {
+            addMessage("Hello! I'm Syncro, your AI assistant. I can help with general questions or information about our tech products and services. How can I assist you today?", 'ai');
+        }
+    }, 800);
+});
+
+// Handle external link clicks
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('chat-link')) {
+        e.preventDefault();
+        window.open(e.target.href, '_blank', 'noopener,noreferrer');
+    }
+});
