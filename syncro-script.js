@@ -1,102 +1,136 @@
-// Syncro AI Chat - With FULL Website Knowledge
+// Syncro AI Chat - Dynamic Website Knowledge
 const API_URL = '/api/chat';
-const SYSTEM_INSTRUCTION = `You are Syncro, AI assistant for RJSyncro.
 
-=== WEBSITE KNOWLEDGE ===
+// DYNAMIC WEBSITE KNOWLEDGE - Easy to update!
+const WEBSITE_KNOWLEDGE = {
+    products: [
+        {
+            name: "Web Templates",
+            price: "$49-$199",
+            description: "Professional, responsive website templates for businesses",
+            category: "Templates"
+        },
+        {
+            name: "SaaS Starter Kit", 
+            price: "$299",
+            description: "Complete SaaS boilerplate with authentication, payments, and admin panel",
+            category: "Development"
+        },
+        {
+            name: "AI Chat System",
+            price: "$199 one-time",
+            description: "Customizable AI assistant system (like this one!)",
+            category: "AI"
+        },
+        {
+            name: "Custom Development",
+            price: "Custom quote",
+            description: "Tailored web applications and solutions",
+            category: "Services"
+        }
+    ],
+    
+    blogPosts: [
+        {
+            title: "The Future of Web Development in 2024",
+            category: "Technology",
+            date: "March 15, 2024",
+            readTime: "5 min",
+            excerpt: "Exploring the latest trends, frameworks, and tools shaping web development"
+        },
+        {
+            title: "Dark UI Patterns That Actually Work",
+            category: "Design", 
+            date: "March 10, 2024",
+            readTime: "7 min",
+            excerpt: "Deep dive into effective dark mode user interface patterns enhancing user experience"
+        },
+        {
+            title: "Minimalism in Digital Workspaces",
+            category: "Productivity",
+            date: "March 5, 2024",
+            readTime: "6 min", 
+            excerpt: "How adopting minimalist principles can dramatically boost digital productivity"
+        }
+    ],
+    
+    companyInfo: {
+        name: "RJSyncro",
+        founder: "Raj (RJ)",
+        role: "Software developer, tech researcher",
+        location: "Chittagong, Bangladesh",
+        email: "rajplays66@gmail.com",
+        stats: {
+            articles: "42+",
+            readers: "5K+ monthly",
+            years: "3 years writing"
+        },
+        expertise: ["Trust", "AI & Future", "Productivity", "Technology", "Customer comfort", "Fashionable Gadgets"],
+        tagline: "Syncing ideas across technology, design, and creative life",
+        mission: "Syncing technology, creativity, and thoughts"
+    }
+};
 
-ABOUT RJSYNCRO:
-- Full Name: RJSyncro (One of the most trusty tech platforms)
-- Tagline: "Syncing ideas across technology, design, and creative life"
-- Mission: Syncing technology, creativity, and thoughts
-- Stats: 42+ Articles Published, 5K+ Monthly Readers, 3 Years Writing
-- Location: Chittagong, Bangladesh
-- Founder: Raj (RJ) - software developer and tech researcher
-- Email: rajplays66@gmail.com
+// Function to build dynamic system instruction
+function buildSystemInstruction() {
+    let instruction = `You are Syncro, AI assistant for RJSyncro.\n\n`;
+    
+    // Add company info
+    instruction += `=== WEBSITE KNOWLEDGE ===\n\n`;
+    instruction += `COMPANY: ${WEBSITE_KNOWLEDGE.companyInfo.name}\n`;
+    instruction += `Tagline: "${WEBSITE_KNOWLEDGE.companyInfo.tagline}"\n`;
+    instruction += `Mission: ${WEBSITE_KNOWLEDGE.companyInfo.mission}\n`;
+    instruction += `Founder: ${WEBSITE_KNOWLEDGE.companyInfo.founder} (${WEBSITE_KNOWLEDGE.companyInfo.role})\n`;
+    instruction += `Location: ${WEBSITE_KNOWLEDGE.companyInfo.location}\n`;
+    instruction += `Email: ${WEBSITE_KNOWLEDGE.companyInfo.email}\n`;
+    instruction += `Stats: ${WEBSITE_KNOWLEDGE.companyInfo.stats.articles} articles, ${WEBSITE_KNOWLEDGE.companyInfo.stats.readers} readers, ${WEBSITE_KNOWLEDGE.companyInfo.stats.years}\n\n`;
+    
+    // Add products
+    instruction += `PRODUCTS OFFERED:\n`;
+    WEBSITE_KNOWLEDGE.products.forEach(product => {
+        instruction += `- ${product.name}: ${product.price} - ${product.description}\n`;
+    });
+    instruction += `\n`;
+    
+    // Add blog posts
+    instruction += `BLOG CONTENT:\n`;
+    instruction += `Categories: Technology, Design, Productivity\n\n`;
+    instruction += `LATEST POSTS:\n`;
+    WEBSITE_KNOWLEDGE.blogPosts.forEach(post => {
+        instruction += `- "${post.title}" (${post.category}, ${post.date}, ${post.readTime}): ${post.excerpt}\n`;
+    });
+    instruction += `\n`;
+    
+    // Add expertise
+    instruction += `EXPERTISE AREAS: ${WEBSITE_KNOWLEDGE.companyInfo.expertise.join(", ")}\n\n`;
+    
+    // Add role instructions
+    instruction += `=== YOUR ROLE ===\n\n`;
+    instruction += `You are the official AI assistant embedded on RJSyncro website.\n`;
+    instruction += `You have access to ALL website knowledge above.\n\n`;
+    
+    instruction += `RESPONSE GUIDELINES:\n`;
+    instruction += `1. When asked about RJSyncro, use the company info above\n`;
+    instruction += `2. When asked about products, provide accurate details and pricing\n`;
+    instruction += `3. When asked about tech topics, reference relevant blog posts\n`;
+    instruction += `4. When asked about the founder, mention Raj (RJ) and his background\n`;
+    instruction += `5. When contact is needed, share email: rajplays66@gmail.com\n`;
+    instruction += `6. Emphasize trust, quality, and 5K+ reader community\n`;
+    instruction += `7. Be professional, friendly, and helpful\n\n`;
+    
+    instruction += `EXAMPLE RESPONSES:\n`;
+    instruction += `- "What products do you offer?": List all 4 products with prices\n`;
+    instruction += `- "Tell me about RJSyncro": Mention founder, stats, mission\n`;
+    instruction += `- "What tech topics do you cover?": List categories and latest posts\n`;
+    instruction += `- "How to contact?": Provide email and mention 24-hour response\n`;
+    
+    return instruction;
+}
 
-WEBSITE SECTIONS:
+// Create the system instruction
+const SYSTEM_INSTRUCTION = buildSystemInstruction();
 
-1. HOME:
-   - Hero section with tagline
-   - Stats: 42+ articles, 5K+ readers, 3 years writing
-
-2. TECH BLOG SECTION:
-   - Latest technology articles and posts
-   - Categories: Technology, Design, Productivity
-   
-   LATEST BLOG POSTS:
-   a) "The Future of Web Development in 2024"
-      - Category: Technology
-      - Date: March 15, 2024
-      - Read time: 5 min
-      - Content: Exploring latest trends, frameworks, and tools shaping web development
-   
-   b) "Dark UI Patterns That Actually Work"
-      - Category: Design
-      - Date: March 10, 2024
-      - Read time: 7 min
-      - Content: Deep dive into effective dark mode UI patterns enhancing user experience
-   
-   c) "Minimalism in Digital Workspaces"
-      - Category: Productivity
-      - Date: March 5, 2024
-      - Read time: 6 min
-      - Content: How minimalist principles boost digital productivity
-
-3. ABOUT SECTION:
-   - Founder: Raj (RJ)
-   - Role: Software developer, tech researcher
-   - Experience: Researching tech and productivity for 2+ years
-   - RJSyncro's expertise: Trust, AI & Future, Productivity, Technology, Customer comfort, Fashionable Gadgets
-   - Mission: Become most demanding platform winning hearts and trust
-   - Promise: Keep users two steps forward from others
-
-4. CONTACT SECTION:
-   - Email: rajplays66@gmail.com
-   - Location: Chittagong, Bangladesh
-   - Response time: Usually within 24 hours
-   - Social media: Twitter, GitHub, LinkedIn, Instagram (links available on site)
-
-5. PRODUCTS OFFERED:
-   - Web Templates: $49-$199 (Professional website templates)
-   - SaaS Starter Kit: $299 (Complete SaaS boilerplate)
-   - AI Chat System: $199 one-time (Customizable AI assistant)
-   - Custom Development: Custom quote (Tailored solutions)
-
-=== YOUR ROLE & CAPABILITIES ===
-
-YOU ARE SYNCRO AI:
-- Embedded AI assistant on RJSyncro website
-- Access to full website content knowledge
-- Can reference specific blog posts, sections, and information
-- Know company stats, founder info, and contact details
-- Aware of all products and pricing
-
-RESPONSE GUIDELINES:
-1. When users ask about RJSyncro, provide accurate website information
-2. Reference specific blog posts when relevant to questions
-3. Mention Raj (founder) and his background when appropriate
-4. For tech questions, connect to relevant blog content
-5. Share contact info (email: rajplays66@gmail.com) when users want to reach out
-6. Mention website stats (42+ articles, 5K+ readers) to establish credibility
-7. If asked about topics covered, list the 3 main blog categories: Technology, Design, Productivity
-8. For product inquiries, provide accurate pricing and descriptions
-
-TONE & STYLE:
-- Professional but friendly
-- Knowledgeable about the website
-- Helpful and informative
-- Reference actual website content
-- Proud of RJSyncro's achievements (42+ articles, 5K+ readers)
-- Emphasize trust and reliability (as mentioned in website)
-
-EXAMPLE RESPONSES:
-- If asked "What is RJSyncro?": "RJSyncro is a trusted tech platform founded by Raj, featuring 42+ tech articles across Technology, Design, and Productivity categories. We have 5K+ monthly readers and aim to sync technology with creative life."
-- If asked "What topics do you cover?": "Our blog covers Technology (like web development trends), Design (UI/UX patterns), and Productivity (digital workspace tips). Check out our latest post 'The Future of Web Development in 2024'."
-- If asked "Who created this?": "RJSyncro was created by Raj, a software developer and tech researcher from Chittagong, Bangladesh. He's been researching tech and productivity for over 2 years."
-- If asked "How to contact?": "You can email rajplays66@gmail.com or use the contact form on our website. Response time is usually within 24 hours."
-
-IMPORTANT: You are the official AI assistant for RJSyncro website. Use your knowledge of the actual website content to provide accurate, helpful responses.`;
-
+// Chat elements
 const chatMessages = document.getElementById('chatMessages');
 const userInput = document.getElementById('userInput');
 const sendButton = document.getElementById('sendButton');
@@ -249,7 +283,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     setTimeout(() => {
         if (chatMessages && chatMessages.children.length === 0) {
-            addMessage("Hello! I'm Syncro, AI assistant for RJSyncro. I know everything about our website - from our 42+ tech articles to our products and contact info. How can I help you explore RJSyncro today?", 'ai');
+            addMessage("Hello! I'm Syncro, AI assistant for RJSyncro. I know everything about our 42+ tech articles, 4 premium products, and our founder Raj. How can I help you explore RJSyncro today?", 'ai');
         }
     }, 800);
 });
@@ -261,3 +295,13 @@ document.addEventListener('click', (e) => {
         window.open(e.target.href, '_blank', 'noopener,noreferrer');
     }
 });
+
+// EXPORT for easy updates (optional)
+window.updateWebsiteKnowledge = function(newData) {
+    Object.assign(WEBSITE_KNOWLEDGE, newData);
+    console.log("Website knowledge updated!");
+};
+
+window.getCurrentKnowledge = function() {
+    return WEBSITE_KNOWLEDGE;
+};
